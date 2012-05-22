@@ -15,29 +15,20 @@ function(namespace, $, Backbone, Example) {
   var Router = Backbone.Router.extend({
     routes: {
       "": "index",
-      ":hash": "index"
+      "search/:q": "search"
     },
 
-    index: function(hash) {
-      var route = this;
+    index: function() {
       var tutorial = new Example.Views.Tutorial();
 
       // Attach the tutorial to the DOM
       tutorial.render(function(el) {
         $("#main").html(el);
-
-        // Fix for hashes in pushState and hash fragment
-        if (hash && !route._alreadyTriggered) {
-          // Reset to home, pushState support automatically converts hashes
-          Backbone.history.navigate("", false);
-
-          // Trigger the default browser behavior
-          location.hash = hash;
-
-          // Set an internal flag to stop recursive looping
-          route._alreadyTriggered = true;
-        }
       });
+    },
+
+    search: function(query) {
+      console.log('queryz:', query);
     }
   });
 
@@ -77,5 +68,4 @@ function(namespace, $, Backbone, Example) {
       Backbone.history.navigate(href, true);
     }
   });
-
 });
